@@ -32,12 +32,12 @@ for cols in Inp_Cols:
        for opts in dictionary[cols].keys():
            if opts ==  option:
                inp_lst.append(dictionary[cols][opts])
-               print(dictionary[cols],inp_lst)
+               
      else :
         option = st.slider(f'{cols}',min_value = 0.0, max_value = float(df_proc[cols].max()))
         inp_lst.append(option)
 inp_lst = np.array(inp_lst).reshape(1,-1)
-print(Loan_app_pred(inp_lst))
+st.write(Loan_app_pred(inp_lst))
           
 
 
