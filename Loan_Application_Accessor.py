@@ -9,12 +9,12 @@ def Loan_app_pred(lst_1):
         return 'Your Loan is approved'
     else :
         return 'Your Loan is not Approved' 
-df_tr = pd.read_csv('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/Loan_pred/Training Dataset.csv')
-df_proc = pd.read_csv('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/Df_train_mvr.csv') 
-#df_proc = pd.read_csv('Df_train_mvr.csv') 
+#df_tr = pd.read_csv('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/Loan_pred/Training Dataset.csv')
+#df_proc = pd.read_csv('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/Df_train_mvr.csv') 
+df_proc = pd.read_csv('Df_train_mvr.csv') 
 #dictionary = json.loads('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/sample.json')
-with open('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/sample.json') as user_file:
-#with open('sample.json') as user_file:     
+#with open('/home/anuj/Documents/ANUJ_Project/RADHA_My_frst_project_preplaced/sample.json') as user_file:
+with open('sample.json') as user_file:     
      dictionary = json.load(user_file)
 #print(dictionary)
 df_proc.drop(columns = ['Unnamed: 0','Loan_Status'],inplace =True)
