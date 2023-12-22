@@ -35,7 +35,7 @@ for cols in Inp_Cols:
        option = st.selectbox(tmp_nm,tmp_lst)
        for opts in dictionary[cols].keys():
            if opts ==  option:
-               inp_lst.append(np.int64(dictionary[cols][opts]))
+               inp_lst.append((dictionary[cols][opts]))
                
      else :
         option = st.slider(f'{cols}',min_value = 0.0, max_value = float(df_proc[cols].max()))
