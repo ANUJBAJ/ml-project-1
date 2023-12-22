@@ -40,12 +40,10 @@ for cols in Inp_Cols:
      else :
         option = st.slider(f'{cols}',min_value = 0.0, max_value = float(df_proc[cols].max()))
         inp_lst.append(option)
-print((np.array(inp_lst)).dtype)
-df_pred = pd.DataFrame(columns = Inp_Cols)
-df_pred.loc[0,:] = inp_lst
-print(df_pred)
-# inp_lst = np.array(inp_lst).reshape(1,-1)
-st.write(Loan_app_pred(np.array(df_pred.loc[0,:]).reshape(1,-1))) 
+Df_user_data = pd.DataFrame(columns = Inp_Cols)
+Df_user_data.loc[0,:] = inp_lst 
+Df_user_data.to_csv('Df_User_Inp_Data.csv')
+st.write(Loan_app_pred(np.array(Df_user_data.loc[0,:]).reshape(1,-1))) 
           
 
 
