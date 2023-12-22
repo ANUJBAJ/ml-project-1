@@ -32,18 +32,22 @@ for cols in Inp_Cols:
        tmp_1 = df_proc[cols].unique()
        for i in tmp_1:
            tmp_lst.append(i)
+       
        option = st.selectbox(tmp_nm,tmp_lst)
        for opts in dictionary[cols].keys():
            if opts ==  option:
-               inp_lst.append((dictionary[cols][opts]))
+               inp_lst.append(np.int64(dictionary[cols][opts]))
                
      else :
         option = st.slider(f'{cols}',min_value = 0.0, max_value = float(df_proc[cols].max()))
         inp_lst.append(option)
 Df_user_data = pd.DataFrame(columns = Inp_Cols)
 Df_user_data.loc[0,:] = inp_lst 
+
 Df_user_data.to_csv('Df_User_Inp_Data.csv')
+print(Loan_app_pred(np.array(Df_user_data.loc[0,:]).reshape(1,-1))) 
 st.write(Loan_app_pred(np.array(Df_user_data.loc[0,:]).reshape(1,-1))) 
+
           
 
 
