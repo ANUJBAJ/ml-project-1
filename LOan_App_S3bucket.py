@@ -36,11 +36,11 @@ def Loan_app_pred(lst_1):
 # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
 def Reading_file(Inp_Cols,s3):
         global csv_file_key
-        pd.DataFrame(columns = Inp_Cols).to_csv(csv_file_key)
-        # with open(csv_file_key,'a') as log_file:
-        #     st.write('I am creating file locally')
-        #     fl_wrt = csv.writer(log_file)
-        #     fl_wrt.writerow(Inp_Cols)
+       # pd.DataFrame(columns = Inp_Cols).to_csv(csv_file_key)
+        with open(csv_file_key,'a') as log_file:
+            st.write('I am creating file locally')
+            fl_wrt = csv.writer(log_file)
+            fl_wrt.writerow(Inp_Cols)
         upload_to_s3(s3)
         return None  
 # #####################################################################################################################################
@@ -111,8 +111,8 @@ if st.button('Save_record'):
                     Logging_Db(log_lst,s3)
     except :
        Reading_file(Inp_Cols,s3)
-       st.write('keying records to the database for the first time')
-       Logging_Db(log_lst,s3)
+       #st.write('keying records to the database for the first time')
+       #Logging_Db(log_lst,s3)
 st.write(Loan_app_pred(np.array(inp_lst).reshape(1,-1)))
 
 
