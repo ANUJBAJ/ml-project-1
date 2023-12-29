@@ -101,16 +101,13 @@ for cols in Inp_Cols:
               option = st.slider(f'{cols}',min_value = 0.0, max_value = float(df_proc[cols].max()))
               inp_lst.append(option)
               log_lst.append(option)
-
+       
 st.button("Writing_Csv")
 if st.button('Save_record'):
-    
-   #s3.head_object(Bucket=bucket_name, Key=csv_file_key)
-   if s3.head_object(Bucket=bucket_name, Key=csv_file_key):
-      st.write('I am going to loging data')
-      Logging_Db(log_lst,s3)
-      
-   else :
+    try:
+                    s3.head_object(Bucket=bucket_name, Key=csv_file_key)
+                    Logging_Db(log_lst,s3)
+    except :
        Reading_file(Inp_Cols,s3)
        st.write('I am going to log in to the database for the first time')
        Logging_Db(log_lst,s3)
