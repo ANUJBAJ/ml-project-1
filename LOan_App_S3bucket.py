@@ -103,8 +103,7 @@ for cols in Inp_Cols:
 
 st.button("Writing_Csv")
 if st.button('Save_record'):
-   file_path = '/home/anuj/Documents/ANUJ_Project/ml-project-1/Df_User_Inp_Data.csv'
-  
+   file_path = 's3://anuj-placement-practise/Df_User_Inp_Data.csv'
    if os.path.exists(file_path):
       st.write('I am going to loging data')
       Logging_Db(log_lst)
