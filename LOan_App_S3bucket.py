@@ -107,8 +107,8 @@ for cols in Inp_Cols:
 st.button("Writing_Csv")
 if st.button('Save_record'):
     try:
-                    s3.head_object(Bucket=bucket_name, Key=csv_file_key)
-                    Logging_Db(log_lst,s3)
+        s3.head_object(Bucket=bucket_name, Key=csv_file_key)
+        Logging_Db(log_lst,s3)
     except :
        Reading_file(Inp_Cols,s3)
        st.write('keying records to the database for the first time')
