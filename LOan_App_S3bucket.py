@@ -8,12 +8,12 @@ import os
 import boto3
 from io import StringIO
 ################/////////////////////////////////////////////////////////////////////////////////####################################
-def upload_to_s3(s3):
+def upload_to_s3():
     global aws_access_key_id,aws_secret_access_key,bucket_name,csv_file_key
     local_file_path = '/home/anuj/Documents/ANUJ_Project/ml-project-1/Df_User_Inp_Data.csv'
     # Create an S3 client
     
-    #s3 = boto3.client('s3',aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    s3 = boto3.client('s3',aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     try:
         # Upload the file
@@ -34,14 +34,14 @@ def Loan_app_pred(lst_1):
         return 'Your Loan is not Approved' 
 # #####################################################################################################################################
 # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
-def Reading_file(Inp_Cols,s3):
+def Reading_file(Inp_Cols):
         global csv_file_key
        # pd.DataFrame(columns = Inp_Cols).to_csv(csv_file_key)
         with open(csv_file_key,'a') as log_file:
             st.write('I am creating file locally')
             fl_wrt = csv.writer(log_file)
             fl_wrt.writerow(Inp_Cols)
-        upload_to_s3(s3)
+        upload_to_s3()
         return None  
 # #####################################################################################################################################
 # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
@@ -50,16 +50,16 @@ def Reading_file(Inp_Cols,s3):
 #         fl_wrt = csv.writer(log_file)
 #         fl_wrt.writerow(lg_ls)
 #//////////////////////S3 BUCKET VERSION FOR THE SAME LOGGING DB//////////////////////////////////////////////////////////////////////////
-def Logging_Db(lg_ls,obj):
+def Logging_Db(lg_ls):
     global aws_access_key_id,aws_secret_access_key,bucket_name,csv_file_key
-    #obj = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key,)
+    obj = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key,)
     response = obj.get_object(Bucket=bucket_name, Key=csv_file_key)
     csv_content = response['Body'].read().decode('utf-8')
     df_lgdb= pd.read_csv(StringIO(csv_content))
     shp1 = df_lgdb.shape
     df_lgdb.loc[shp1[0],:] = lg_ls
     df_lgdb.to_csv(csv_file_key,index = False)
-    upload_to_s3(s3)
+    upload_to_s3()
 
 
 # # #####################################################################################################################################
@@ -69,7 +69,7 @@ aws_secret_access_key = 'IJ/ib8K1jBT1YmTUvCZ3sdxxZWNaHdeDCwBSgKqq'
 bucket_name = 'anuj-placement-practise'
 csv_file_key = 'Df_User_Inp_Data.csv'
 df_proc = pd.read_csv('Df_train_mvr.csv') 
-s3 = boto3.client('s3',aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+#s3 = boto3.client('s3',aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 with open('sample.json') as user_file:     
      dictionary = json.load(user_file)
 df_proc.drop(columns = ['Loan_Status'],inplace =True)
@@ -108,11 +108,11 @@ st.button("Writing_Csv")
 if st.button('Save_record'):
     try:
         s3.head_object(Bucket=bucket_name, Key=csv_file_key)
-        Logging_Db(log_lst,s3)
+        Logging_Db(log_lst)
     except :
-       Reading_file(Inp_Cols,s3)
+       Reading_file(Inp_Cols)
        st.write('keying records to the database for the first time')
-       Logging_Db(log_lst,s3)
+       Logging_Db(log_lst)
 st.write(Loan_app_pred(np.array(inp_lst).reshape(1,-1)))
 
 
