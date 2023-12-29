@@ -9,7 +9,7 @@ import boto3
 from io import StringIO
 ################/////////////////////////////////////////////////////////////////////////////////####################################
 def upload_to_s3(s3):
-    global aws_access_key_id,aws_secret_access_key,bucket_name,csv_file_key
+    global aws_access_key_id,aws_secret_access_key,bucket_name,csv_file_key,local_file_path
     local_file_path = '/home/anuj/Documents/ANUJ_Project/ml-project-1/Df_User_Inp_Data.csv'
     # Create an S3 client
     
@@ -36,7 +36,7 @@ def Loan_app_pred(lst_1):
 # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
 def Reading_file(Inp_Cols,s3):
         
-        with open('Df_User_Inp_Data.csv','a') as log_file:
+        with open(local_file_path,'a') as log_file:
             st.write('I am creating file locally')
             fl_wrt = csv.writer(log_file)
             fl_wrt.writerow(Inp_Cols)
