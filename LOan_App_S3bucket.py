@@ -109,7 +109,7 @@ if st.button('Save_record'):
                     Logging_Db(log_lst,s3)
     except :
        Reading_file(Inp_Cols,s3)
-       st.write('I am going to log in to the database for the first time')
+       st.write('keying records to the database for the first time')
        Logging_Db(log_lst,s3)
 st.write(Loan_app_pred(np.array(inp_lst).reshape(1,-1)))
 
