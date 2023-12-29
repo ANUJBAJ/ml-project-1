@@ -55,8 +55,6 @@ def Logging_Db(lg_ls):
     csv_content = response['Body'].read().decode('utf-8')
     df_lgdb= pd.read_csv(StringIO(csv_content))
     shp1 = df_lgdb.shape
-    print(f'{ df_lgdb.columns}:- this is my shape')
-    print(f'{len(lg_ls)}:- this is my len')
     df_lgdb.loc[shp1[0],:] = lg_ls
     df_lgdb.to_csv(csv_file_key,index = False)
     upload_to_s3()
@@ -79,6 +77,7 @@ inp_lst = []
 log_lst = []
 
 for cols in Inp_Cols:
+     print(cols)
      tmp_nm = f'{cols}'
      if df_proc[cols].dtypes == 'object' and cols  != 'Credit_History':
        tmp_lst = []
@@ -103,18 +102,18 @@ for cols in Inp_Cols:
               inp_lst.append(option)
               log_lst.append(option)
 
-st.button("Writing_Csv")
-if st.button('Save_record'):
-   file_path = '/home/anuj/Documents/ANUJ_Project/ml-project-1/Df_User_Inp_Data.csv'
+# st.button("Writing_Csv")
+# if st.button('Save_record'):
+#    file_path = '/home/anuj/Documents/ANUJ_Project/ml-project-1/Df_User_Inp_Data.csv'
   
-   if os.path.exists(file_path):
-      st.write('I am going to loging data')
-      Logging_Db(log_lst)
+#    if os.path.exists(file_path):
+#       st.write('I am going to loging data')
+#       Logging_Db(log_lst)
       
-   else :
-       Reading_file(Inp_Cols)
-       st.write('I am going to log in to the database for the first time')
-       Logging_Db(log_lst)
+#    else :
+#        Reading_file(Inp_Cols)
+#        st.write('I am going to log in to the database for the first time')
+#        Logging_Db(log_lst)
 st.write(Loan_app_pred(np.array(inp_lst).reshape(1,-1)))
 
 
