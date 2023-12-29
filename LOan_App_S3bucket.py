@@ -37,6 +37,7 @@ def Loan_app_pred(lst_1):
 def Reading_file(Inp_Cols,s3):
         
         with open('Df_User_Inp_Data.csv','a') as log_file:
+            st.write('I am creating file locally')
             fl_wrt = csv.writer(log_file)
             fl_wrt.writerow(Inp_Cols)
         upload_to_s3(s3)
