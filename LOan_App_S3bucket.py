@@ -14,6 +14,7 @@ def upload_to_s3():
     # Create an S3 client
     
     s3 = boto3.client('s3',aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    
 
     try:
         # Upload the file
@@ -50,22 +51,38 @@ def Reading_file(Inp_Cols):
 #         fl_wrt = csv.writer(log_file)
 #         fl_wrt.writerow(lg_ls)
 #//////////////////////S3 BUCKET VERSION FOR THE SAME LOGGING DB//////////////////////////////////////////////////////////////////////////
+# def Logging_Db(lg_ls):
+#     global aws_access_key_id,aws_secret_access_key,bucket_name,csv_file_key
+#     obj = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key,)
+#     response = obj.get_object(Bucket=bucket_name, Key=csv_file_key)
+#     csv_content = response['Body'].read().decode('utf-8')
+#     csv_reader = csv.reader(StringIO(csv_content ))
+#     csv_data = list(csv_reader)
+#     st.write(csv_data)
+#     # csv_data.append(lg_ls)
+   
+#     # csv_buffer = StringIO()
+#     # csv_writer = csv.writer(csv_buffer)
+#     # csv_writer.writerows(csv_data)
+
+#     #updated_csv_data = csv_writer.getvalue()
+#     #obj.put_object(bucket_name = bucket_name,key =  csv_file_key,data = csv_buffer.getvalue())
+
+# # #####################################################################################################################################
 def Logging_Db(lg_ls):
     global aws_access_key_id,aws_secret_access_key,bucket_name,csv_file_key
     obj = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key,)
     response = obj.get_object(Bucket=bucket_name, Key=csv_file_key)
     csv_content = response['Body'].read().decode('utf-8')
-    df_lgdb= pd.read_csv(StringIO(csv_content))
+    df_lgdb = pd.read_csv(StringIO(csv_content))
     shp1 = df_lgdb.shape
     df_lgdb.loc[shp1[0],:] = lg_ls
     df_lgdb.to_csv(csv_file_key,index = False)
     upload_to_s3()
 
-
-# # #####################################################################################################################################
 # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
-aws_access_key_id = 'AKIATKANQG7LIGXYXBES'
-aws_secret_access_key = 'IJ/ib8K1jBT1YmTUvCZ3sdxxZWNaHdeDCwBSgKqq'
+aws_access_key_id = st.text_input('Enter your aws_access_key_id = ')
+aws_secret_access_key = st.text_input('Enter your aws_secret_access_key = ')
 bucket_name = 'anuj-placement-practise'
 csv_file_key = 'Df_User_Inp_Data.csv'
 df_proc = pd.read_csv('Df_train_mvr.csv') 
@@ -106,13 +123,22 @@ for cols in Inp_Cols:
        
 st.button("Writing_Csv")
 if st.button('Save_record'):
-    try:
-        s3.head_object(Bucket=bucket_name, Key=csv_file_key)
+    # try:
+        
+    #     s3.head_object(Bucket=bucket_name, Key=csv_file_key)
+    #     Logging_Db(log_lst)
+    # except :
+    #    Reading_file(Inp_Cols)
+    #    st.write('keying records to the database for the first time')
+    #    Logging_Db(log_lst)
+    if os.path.exists('/home/anuj/Documents/ANUJ_Project/ml-project-1/Df_User_Inp_Data.csv'):
         Logging_Db(log_lst)
-    except :
-       Reading_file(Inp_Cols)
-       st.write('keying records to the database for the first time')
-       Logging_Db(log_lst)
+    else:
+        Reading_file(Inp_Cols)
+        st.write('keying records to the database for the first time')
+        Logging_Db(log_lst)
+
+
 st.write(Loan_app_pred(np.array(inp_lst).reshape(1,-1)))
 
 
