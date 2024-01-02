@@ -62,7 +62,6 @@ def Logging_Db(lg_ls,obj):
     df_lgdb.loc[len(df_lgdb)] = lg_ls
     #st.write(df_lgdb)
     csv_content = df_lgdb.to_csv(index = False)
-    
     csv_buffer = BytesIO(csv_content.encode())
     obj.upload_fileobj(csv_buffer, bucket_name,csv_file_key)
 # # #####################################################################################################################################
@@ -70,8 +69,8 @@ def Logging_Db(lg_ls,obj):
         
 
 # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
-aws_access_key_id = 'AKIATKANQG7LIGXYXBES'
-aws_secret_access_key = 'IJ/ib8K1jBT1YmTUvCZ3sdxxZWNaHdeDCwBSgKqq'
+aws_access_key_id = st.text_input('Enter your aws_access_key_id = ')
+aws_secret_access_key = st.text_input('Enter your aws_secret_access_key = ')
 bucket_name = 'anuj-placement-practise'
 csv_file_key = 'Df_User_Inp_Data_V2.csv'   
 df_proc = pd.read_csv('Df_train_mvr.csv') 
