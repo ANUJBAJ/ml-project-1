@@ -15,13 +15,7 @@ import mysql.connector
 #engine = create_engine(f"mysql://{os.environ['username']}:{os.environ['password']}@{os.environ['host']}/{os.environ['database']}")
 
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-# db_endpoint = 'anuj-mlpro-database1.clegg02061tv.us-east-1.rds.amazonaws.com'
-# db_port = 3306
-# db_name = 'testDB'
-# db_username = 'achyut'
-# #st.text_input('Enter your password')
-# db_password = 'RADHA_KRISHNA'
-
+#
 def Logging_Db(lst1):
     values = ()
     conn = mysql.connector.connect(
@@ -100,20 +94,6 @@ if st.button('Save_record'):
 
 
 st.write(Loan_app_pred(np.array(inp_lst).reshape(1,-1)))
-# import json
-# import boto3
-# ssm = boto3.client('ssm', 'us-east-2')
-# def get_parameters():
-#     response = ssm.get_parameters(
-#         Names=['mysql-host'])#,WithDecryption=True
-    
-#     for parameter in response['Parameters']:
-#         return parameter['Value']
-        
-# def lambda_handler(event, context):
-#     value = get_parameters()
-#     print("value1 = " + value)
-#     return value  # Echo back the first key value
 
 
 
