@@ -102,7 +102,7 @@ for cols in Inp_Cols:
 
 
 if st.button('Submit'):
-   if (Loan_app_pred(inp_lst))=='Yes':
+   if (Loan_app_pred(np.array(inp_lst).reshape(1,-1)))=='Yes':
         log_lst.append('Yes')
         Logging_Db(log_lst)
         st.write('Your Loan is approved')
