@@ -16,7 +16,6 @@ def get_parameters():
     dct1 ={}
     response = ssm.get_parameters(
     Names=['mysql-host','mysql-port','mysql-database','mysql-user','mysql-password'])#,WithDecryption=True
-    print(response)
     for parameter in response['Parameters']:
         if parameter['Name'] =='mysql-host':
                dct1['host'] = parameter['Value']
@@ -44,8 +43,8 @@ def Logging_Db(lst1):
     )  
     cursor = conn.cursor()
     sql_insert_query = """
-    INSERT INTO Banking_Customers(Gender , Married , Dependents , Education , Self_Employed , ApplicantIncome ,CoapplicantIncome , LoanAmount , Loan_Amount_Term ,Credit_History,Property_Area) 
-    VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s);
+    INSERT INTO Banking_Customers(Gender , Married , Dependents , Education , Self_Employed , ApplicantIncome ,CoapplicantIncome , LoanAmount , Loan_Amount_Term ,Credit_History,Property_Area,Loan_Status) 
+    VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s,%s);
      """
     for i in lst1:
         values += (i,)
@@ -59,9 +58,9 @@ def Logging_Db(lst1):
 def Loan_app_pred(lst_1):
     model_1 = pickle.load(open('finalized_model.sav', 'rb'))
     if model_1.predict(lst_1) == 1:
-        return 'Your Loan is approved'
+        return 'Yes'
     else :
-        return 'Your Loan is not Approved' 
+        return 'No' 
 # # #####################################################################################################################################
 #
 # # #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
@@ -102,8 +101,20 @@ for cols in Inp_Cols:
 
 
 
-if st.button('Save_record'):
-   Logging_Db(log_lst)
+if st.button('Submit'):
+   if (Loan_app_pred(inp_lst))=='Yes':
+        log_lst.append('Yes')
+        Logging_Db(log_lst)
+        st.write('Your Loan is approved')
+   else :
+         log_lst.append('No')
+         Logging_Db(log_lst)
+         st.write('Your Loan is not approved')
+        
+        
+        
+        
+        
     
 
 
