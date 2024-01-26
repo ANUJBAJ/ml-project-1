@@ -7,10 +7,15 @@ import csv
 import os
 import boto3
 from io import StringIO
-#from sqlalchemy import create_engine
+import string
+import random
 import mysql.connector
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+def Id_generator():
+     chars = string.ascii_uppercase + string.digits
+     random_id = ''.join(random.choice(chars) for _ in range(8))
+     return(random_id)
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 def get_parameters():
     ssm = boto3.client('ssm', aws_access_key_id=os.getenv('access_key_id'), aws_secret_access_key=os.getenv('secret_access_key'),region_name = 'us-east-1')
     dct1 ={}
@@ -43,8 +48,8 @@ def Logging_Db(lst1):
     )  
     cursor = conn.cursor()
     sql_insert_query = """
-    INSERT INTO Banking_Customers(Gender , Married , Dependents , Education , Self_Employed , ApplicantIncome ,CoapplicantIncome , LoanAmount , Loan_Amount_Term ,Credit_History,Property_Area,Loan_Status) 
-    VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s,%s);
+    INSERT INTO Banking_Customers(Id,Gender , Married , Dependents , Education , Self_Employed , ApplicantIncome ,CoapplicantIncome , LoanAmount , Loan_Amount_Term ,Credit_History,Property_Area,Loan_Status) 
+    VALUES (%s,%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s,%s);
      """
     for i in lst1:
         values += (i,)
@@ -99,7 +104,7 @@ for cols in Inp_Cols:
               inp_lst.append(option)
               log_lst.append(option)
 
-
+log_lst.insert(0,Id_generator())
 
 if st.button('Submit'):
    if (Loan_app_pred(np.array(inp_lst).reshape(1,-1)))=='Yes':
