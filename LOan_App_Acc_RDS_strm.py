@@ -105,7 +105,7 @@ for cols in Inp_Cols:
               log_lst.append(option)
 
 log_lst.insert(0,Id_generator())
-
+st.write(log_lst)
 if st.button('Submit'):
    if (Loan_app_pred(np.array(inp_lst).reshape(1,-1)))=='Yes':
         log_lst.append('Yes')
